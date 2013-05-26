@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
     	LinearLayout numberOfQuestionsList = (LinearLayout) findViewById(R.id.numberOfQuestionList);
 
     	
-    	for (int numberOfQuestions = 46; numberOfQuestions <= 50; numberOfQuestions++) {
+    	for (int numberOfQuestions = 1; numberOfQuestions <= 50; numberOfQuestions++) {
     		TextView numberOfQuestionLabel = new TextView(this);
     		numberOfQuestionLabel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     		numberOfQuestionLabel.setText(String.valueOf(numberOfQuestions));
@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
     		
     		numberOfQuestionsList.addView(questionCard);
     		
-    		for (int correctAnswers = 0; correctAnswers <= (numberOfQuestions / 2); correctAnswers++) {
+    		for (int correctAnswers = 0; correctAnswers <= numberOfQuestions; correctAnswers++) {
         		Integer score = Math.round(correctAnswers * 100 / numberOfQuestions);
         		
            	
@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
             	layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));  
             	layout.addView(renderScoreLayout(correctAnswers, score));
             	
-            	if ( (correctAnswers * 2) < numberOfQuestions ) layout.addView(renderScoreLayout(correctAnswers*2, score));
+            	//if ( (correctAnswers * 2) < numberOfQuestions ) layout.addView(renderScoreLayout(correctAnswers*2, score));
 
         		
             	scoreList.addView(layout);
