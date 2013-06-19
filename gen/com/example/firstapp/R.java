@@ -25,18 +25,36 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f080004;
-        public static final int numberCorrect=0x7f080001;
+        public static final int gradesheet_detail=0x7f080002;
+        public static final int gradesheet_detail_container=0x7f080000;
+        public static final int gradesheet_list=0x7f080001;
         public static final int numberOfQuestionList=0x7f080003;
-        public static final int numberOfQuestions=0x7f080000;
-        public static final int score=0x7f080002;
     }
     public static final class layout {
-        public static final int activity_display_message=0x7f030000;
-        public static final int activity_main=0x7f030001;
+        public static final int activity_gradesheet_detail=0x7f030000;
+        /** 
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    
+
+    Layout alias to replace the single-pane version of the layout with a
+    two-pane version on Large screens.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    
+         */
+        public static final int activity_gradesheet_homepage=0x7f030001;
+        public static final int activity_gradesheet_twopane=0x7f030002;
+        public static final int fragment_gradesheet_detail=0x7f030003;
     }
     public static final class menu {
         public static final int display_message=0x7f070000;
         public static final int main=0x7f070001;
+        public static final int scrolling_numbers_static_cards=0x7f070002;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -47,6 +65,9 @@ public final class R {
         public static final int hello_world=0x7f050002;
         public static final int number_of_questions_label=0x7f050006;
         public static final int title_activity_display_message=0x7f050005;
+        public static final int title_activity_scrolling_numbers_static_cards=0x7f050008;
+        public static final int title_gradesheet_detail=0x7f05000a;
+        public static final int title_gradesheet_list=0x7f050009;
     }
     public static final class style {
         /** 

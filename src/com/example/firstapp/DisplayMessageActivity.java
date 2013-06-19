@@ -38,7 +38,6 @@ public class DisplayMessageActivity extends Activity {
 		textView.setTextSize(40);
 		textView.setText(message);
 
-		new ServiceCallTask().execute("test");
 		
 		setContentView(textView);
 		// Show the Up button in the action bar.
