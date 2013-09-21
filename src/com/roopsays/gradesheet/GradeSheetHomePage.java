@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.firstapp.R;
-import com.example.firstapp.R.id;
-import com.example.firstapp.R.layout;
 import com.roopsays.gradesheet.model.GradesheetHistory;
 import com.roopsays.gradesheet.model.GradesheetMeta;
 
@@ -27,7 +25,7 @@ import com.roopsays.gradesheet.model.GradesheetMeta;
  * <p>
  * The activity makes heavy use of fragments. The list of items is a
  * {@link GradeSheetListFragment} and the item details (if present) is a
- * {@link GradeSheetDetailFragment}.
+ * {@link GradeSheetDetailCustomFragment}.
  * <p>
  * This activity also implements the required
  * {@link GradeSheetListFragment.Callbacks} interface to listen for item
@@ -89,7 +87,7 @@ public class GradeSheetHomePage extends FragmentActivity implements
 			// fragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putString(GradeSheetDetailFragment.ARG_ITEM_ID, id);
-			GradeSheetDetailFragment fragment = new GradeSheetDetailFragment();
+			GradeSheetDetailCustomFragment fragment = new GradeSheetDetailCustomFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.gradesheet_detail_container, fragment)

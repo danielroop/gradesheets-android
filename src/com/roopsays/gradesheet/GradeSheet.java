@@ -1,14 +1,12 @@
 package com.roopsays.gradesheet;
 
-import com.example.firstapp.R;
-import com.example.firstapp.R.id;
-import com.example.firstapp.R.layout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
+import com.example.firstapp.R;
 
 /**
  * An activity representing a single GradeSheet detail screen. This activity is
@@ -17,7 +15,7 @@ import android.view.MenuItem;
  * {@link GradeSheetHomePage}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link GradeSheetDetailFragment}.
+ * a {@link GradeSheetDetailCustomFragment}.
  */
 public class GradeSheet extends FragmentActivity {
 
@@ -45,10 +43,11 @@ public class GradeSheet extends FragmentActivity {
 			arguments.putInt(
 					GradeSheetDetailFragment.ARG_ITEM_ID,
 					getIntent().getIntExtra(GradeSheetDetailFragment.ARG_ITEM_ID, 0));
-			GradeSheetDetailFragment fragment = new GradeSheetDetailFragment();
+			
+			GradeSheetDetailFragment fragment = new GradeSheetDetailGridViewFragment();
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.gradesheet_detail_container, fragment).commit();
+			
+			getSupportFragmentManager().beginTransaction().add(R.id.gradesheet_detail_container, fragment).commit();
 		}
 	}
 
