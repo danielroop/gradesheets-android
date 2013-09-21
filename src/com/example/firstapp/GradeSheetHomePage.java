@@ -1,8 +1,18 @@
 package com.example.firstapp;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.example.firstapp.model.GradesheetHistory;
+import com.example.firstapp.model.GradesheetMeta;
 
 /**
  * An activity representing a list of GradeSheets. This activity has different
@@ -28,27 +38,40 @@ public class GradeSheetHomePage extends FragmentActivity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
+	private GradesheetHistory history;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gradesheet_homepage);
 
-		if (findViewById(R.id.gradesheet_detail_container) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-large and
-			// res/values-sw600dp). If this view is present, then the
-			// activity should be in two-pane mode.
-			mTwoPane = true;
+		history = new GradesheetHistory(getApplicationContext());
+		
+		
+		Button button = (Button) findViewById(R.id.create_gradesheet_button);
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				TextView text = (TextView) findViewById(R.id.gradesheet_numberofquestions);
+				int numberOfQuestions = Integer.parseInt(text.getText().toString());
+				
+				history.updateUsage(numberOfQuestions);
 
-			// In two-pane mode, list items should be given the
-			// 'activated' state when touched.
-			((GradeSheetListFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.gradesheet_list))
-					.setActivateOnItemClick(true);
+				Intent detailIntent = new Intent(GradeSheetHomePage.this, GradeSheet.class);
+				detailIntent.putExtra(GradeSheetDetailFragment.ARG_ITEM_ID, numberOfQuestions);
+				startActivity(detailIntent);
+			}
+		});
+		
+		List<GradesheetMeta> topResults = history.topGradesheetRequests();
+		LinearLayout view = (LinearLayout) findViewById(R.id.gradesheet_history_list);
+		
+		for(int i = 0; i < topResults.size(); i++) {
+			TextView topResultTextView = new TextView(this);
+			topResultTextView.setText(String.valueOf(topResults.get(i).getNumberOfQuestions()) + "::" + String.valueOf(topResults.get(i).getNumberOfTimesAccessed()));
+			topResultTextView.setTextSize(20);
+			view.addView(topResultTextView);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
 	}
 
 	/**

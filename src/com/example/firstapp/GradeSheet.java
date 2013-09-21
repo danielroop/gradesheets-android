@@ -38,10 +38,9 @@ public class GradeSheet extends FragmentActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(
+			arguments.putInt(
 					GradeSheetDetailFragment.ARG_ITEM_ID,
-					getIntent().getStringExtra(
-							GradeSheetDetailFragment.ARG_ITEM_ID));
+					getIntent().getIntExtra(GradeSheetDetailFragment.ARG_ITEM_ID, 0));
 			GradeSheetDetailFragment fragment = new GradeSheetDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

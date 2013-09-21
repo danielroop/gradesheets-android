@@ -1,19 +1,17 @@
 package com.example.firstapp;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.MeasureSpec;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.example.firstapp.dummy.DummyContent;
 
 /**
  * A fragment representing a single GradeSheet detail screen. This fragment is
@@ -27,10 +25,10 @@ public class GradeSheetDetailFragment extends Fragment {
 	 */
 	public static final String ARG_ITEM_ID = "item_id";
 
-	/**
-	 * The dummy content this fragment is presenting.
-	 */
-	private DummyContent.DummyItem mItem;
+	
+	private Integer numberOfQuestions;
+	private Typeface robotoCondRegular;
+	private Typeface robotoBold;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,12 +42,11 @@ public class GradeSheetDetailFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
-			// Load the dummy content specified by the fragment
-			// arguments. In a real-world scenario, use a Loader
-			// to load content from a content provider.
-			mItem = DummyContent.ITEM_MAP.get(getArguments().getString(
-					ARG_ITEM_ID));
+			numberOfQuestions = getArguments().getInt(ARG_ITEM_ID);
 		}
+		
+		robotoCondRegular = Typeface.createFromAsset(getActivity().getApplicationContext().getAssets(), "RobotoCondensed-Regular.ttf");
+		robotoBold = Typeface.createFromAsset(getActivity().getApplicationContext().getAssets(), "Roboto-Bold.ttf");
 	}
 
 	@Override
@@ -58,25 +55,24 @@ public class GradeSheetDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_gradesheet_detail,
 				container, false);
 
-		// Show the dummy content as text in a TextView.
-		if (mItem != null) {
-			createQuestionCareds(rootView, Integer.parseInt(mItem.content));
+		if (numberOfQuestions != null) {
+			createQuestionCards(rootView, numberOfQuestions);
 		}
 
 		return rootView;
 	}
 
-	public void createQuestionCareds(View parentView, int numberOfQuestions) {
+	public void createQuestionCards(View parentView, int numberOfQuestions) {
 		LinearLayout scoreList = (LinearLayout) parentView.findViewById(R.id.numberOfQuestionList);
 
 		LinearLayout layout = new LinearLayout(getActivity());
 		for (int correctAnswers = 0; correctAnswers <= numberOfQuestions; correctAnswers++) {
 			Integer score = Math.round(correctAnswers * 100 / numberOfQuestions);
 
-			if (correctAnswers % 3 == 0) {
+			if (correctAnswers % 21 == 0) {
 				layout = new LinearLayout(getActivity());
-				layout.setOrientation(LinearLayout.HORIZONTAL);
-				layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+				layout.setOrientation(LinearLayout.VERTICAL);
+				layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 				scoreList.addView(layout);
 			}
 			
@@ -87,33 +83,43 @@ public class GradeSheetDetailFragment extends Fragment {
 	}
 
 	public LinearLayout renderScoreLayout(LinearLayout layout, Integer correctAnswers, Integer score) {
-		LayoutParams correctAnswerLayoutParams = new LayoutParams(125, LayoutParams.WRAP_CONTENT);
-		correctAnswerLayoutParams.setMargins(5, 0, 5, 0);
+		int textWidth = 80;
+		
+		
+		LayoutParams correctAnswerLayoutParams = new LayoutParams(textWidth, LayoutParams.WRAP_CONTENT);
 
 		TextView correctAnswerTextView = new TextView(getActivity());
-		correctAnswerTextView.setText(String.valueOf(correctAnswers) + "  ");
+		correctAnswerTextView.setText(String.valueOf(correctAnswers));
 		correctAnswerTextView.setLayoutParams(correctAnswerLayoutParams);
-
 		correctAnswerTextView.setGravity(Gravity.CENTER);
-		correctAnswerTextView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-		correctAnswerTextView.setBackgroundColor(Color.LTGRAY);
+		correctAnswerTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeNumber);
+		correctAnswerTextView.setTypeface(robotoBold);
+		
+		
 
 		TextView dividerTextView = new TextView(getActivity());
 		dividerTextView.setLayoutParams(new LayoutParams(1, LayoutParams.MATCH_PARENT));
 		dividerTextView.setBackgroundColor(Color.BLACK);
 
-		LayoutParams scoreTextViewLayoutParams = new LayoutParams(125, LayoutParams.WRAP_CONTENT);
-		scoreTextViewLayoutParams.setMargins(5, 5, 5, 5);
+		LayoutParams scoreTextViewLayoutParams = new LayoutParams(textWidth, LayoutParams.WRAP_CONTENT);
 
 		TextView scoreTextView = new TextView(getActivity());
-		scoreTextView.setText("  " + String.valueOf(score) + "%");
+		scoreTextView.setText(String.valueOf(score) + "%");
 		scoreTextView.setLayoutParams(scoreTextViewLayoutParams);
 		scoreTextView.setGravity(Gravity.CENTER);
-		scoreTextView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
+		scoreTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeScore);
+		correctAnswerTextView.setTypeface(robotoCondRegular);
 
-		layout.addView(correctAnswerTextView);
-		layout.addView(dividerTextView);
-		layout.addView(scoreTextView);
+
+
+		LinearLayout innerLayout = new LinearLayout(getActivity());
+		innerLayout.setOrientation(LinearLayout.HORIZONTAL);
+		innerLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		
+		innerLayout.addView(correctAnswerTextView);
+		//innerLayout.addView(dividerTextView);
+		innerLayout.addView(scoreTextView);
+		layout.addView(innerLayout);
 
 		return layout;
 	}

@@ -7,8 +7,8 @@
     <string name="edit_message">Enter a message</string>
     <string name="default_score">0%</string>
     <string name="title_activity_display_message">My message</string>
-    <string name="number_of_questions_label">Number of Questions</string>
-    <string name="correct_answers_label">Correct Answers</string>
+    <string name="gradesheet_history_header">Recent Gradesheets</string>
+    <string name="create_gradesheet_label">Create</string>
     <string name="title_activity_scrolling_numbers_static_cards">ScrollingNumbersStaticCards</string>
     <string name="title_gradesheet_list">GradeSheets</string>
     <string name="title_gradesheet_detail">GradeSheet Detail</string>
