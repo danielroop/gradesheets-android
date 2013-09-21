@@ -1,4 +1,4 @@
-package com.example.firstapp.model;
+package com.roopsays.gradesheet.model;
 
 import java.util.ArrayList;
 import java.util.List;

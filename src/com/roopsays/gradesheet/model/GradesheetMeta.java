@@ -1,4 +1,4 @@
-package com.example.firstapp.model;
+package com.roopsays.gradesheet.model;
 
 public class GradesheetMeta {
 	private int numberOfQuestions;

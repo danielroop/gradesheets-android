@@ -1,4 +1,4 @@
-package com.example.firstapp;
+package com.roopsays.gradesheet;
 
 import java.util.List;
 
@@ -11,8 +11,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.firstapp.model.GradesheetHistory;
-import com.example.firstapp.model.GradesheetMeta;
+import com.example.firstapp.R;
+import com.example.firstapp.R.id;
+import com.example.firstapp.R.layout;
+import com.roopsays.gradesheet.model.GradesheetHistory;
+import com.roopsays.gradesheet.model.GradesheetMeta;
 
 /**
  * An activity representing a list of GradeSheets. This activity has different

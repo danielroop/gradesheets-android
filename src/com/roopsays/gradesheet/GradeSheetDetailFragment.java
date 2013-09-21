@@ -1,4 +1,9 @@
-package com.example.firstapp;
+package com.roopsays.gradesheet;
+
+import com.example.firstapp.R;
+import com.example.firstapp.R.id;
+import com.example.firstapp.R.layout;
+import com.example.firstapp.R.style;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

@@ -1,4 +1,8 @@
-package com.example.firstapp;
+package com.roopsays.gradesheet;
+
+import com.example.firstapp.R;
+import com.example.firstapp.R.id;
+import com.example.firstapp.R.layout;
 
 import android.content.Intent;
 import android.os.Bundle;

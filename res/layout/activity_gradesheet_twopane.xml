@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/gradesheet_list"
-        android:name="com.example.firstapp.GradeSheetListFragment"
+        android:name="com.roopsays.gradesheet.GradeSheetListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
