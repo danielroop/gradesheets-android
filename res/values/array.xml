@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array
+        name="pref_detailType_entries">
+        <item>Initial Horizatonl Scorlling</item>
+		<item>First Attempt at GridView</item>	
+    </array>
+    
+	<array
+        name="pref_detailType_values">
+        <item>custom1</item>
+		<item>gridview</item>	
+    </array>
+         
+</resources>

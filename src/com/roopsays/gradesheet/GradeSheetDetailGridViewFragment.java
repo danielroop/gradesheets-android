@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.example.firstapp.R;
-
 /**
  * A fragment representing a single GradeSheet detail screen. This fragment is
  * either contained in a {@link GradeSheetHomePage} in two-pane mode (on
@@ -28,7 +26,7 @@ public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_gradesheet_detail,
+		View rootView = inflater.inflate(R.layout.fragment_gradesheet_detail_gridview,
 				container, false);
 
 		if (numberOfQuestions != null) {

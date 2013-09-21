@@ -1,12 +1,12 @@
 package com.roopsays.gradesheet;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
-
-import com.example.firstapp.R;
 
 /**
  * An activity representing a single GradeSheet detail screen. This activity is
@@ -44,7 +44,14 @@ public class GradeSheet extends FragmentActivity {
 					GradeSheetDetailFragment.ARG_ITEM_ID,
 					getIntent().getIntExtra(GradeSheetDetailFragment.ARG_ITEM_ID, 0));
 			
-			GradeSheetDetailFragment fragment = new GradeSheetDetailGridViewFragment();
+			
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+			String detailTypePref = sharedPref.getString("detailType", "");
+			
+			GradeSheetDetailFragment fragment = new GradeSheetDetailCustomFragment();
+			
+			if (detailTypePref.equals("gridview")) fragment = new GradeSheetDetailGridViewFragment();
+			
 			fragment.setArguments(arguments);
 			
 			getSupportFragmentManager().beginTransaction().add(R.id.gradesheet_detail_container, fragment).commit();

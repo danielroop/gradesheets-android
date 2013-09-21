@@ -5,13 +5,16 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.firstapp.R;
 import com.roopsays.gradesheet.model.GradesheetHistory;
 import com.roopsays.gradesheet.model.GradesheetMeta;
 
@@ -48,7 +51,6 @@ public class GradeSheetHomePage extends FragmentActivity implements
 
 		history = new GradesheetHistory(getApplicationContext());
 		
-		
 		Button button = (Button) findViewById(R.id.create_gradesheet_button);
 		button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -74,7 +76,29 @@ public class GradeSheetHomePage extends FragmentActivity implements
 			view.addView(topResultTextView);
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.global_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		
+		switch(item.getItemId()){
+        	case R.id.settings:
+    			Intent settingsIntent = new Intent(this, SettingsActivity.class);
+    			startActivity(settingsIntent);
+            break;
 
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Callback method from {@link GradeSheetListFragment.Callbacks} indicating
 	 * that the item with the given ID was selected.

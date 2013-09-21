@@ -1,0 +1,11 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<ListPreference
+        android:key="@string/pref_detailType_id"
+        android:title="@string/pref_detailTypeTitle"
+        android:dialogTitle="@string/pref_detailTypeDialogTitle"
+        android:entries="@array/pref_detailType_entries"
+        android:entryValues="@array/pref_detailType_values"
+        android:defaultValue="@string/pref_detailType_default" />
+
+</PreferenceScreen>
