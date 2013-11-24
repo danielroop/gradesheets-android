@@ -1,7 +1,10 @@
 package com.roopsays.gradesheet;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,9 @@ import android.widget.TextView;
  * tablets) or a {@link GradeSheet} on handsets.
  */
 public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
+	private static final String TAG = "GradeSheetDetailGridViewFragment";
+	
+	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -38,10 +44,10 @@ public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
 
 	public void createQuestionCards(View parentView, int numberOfQuestions) {
 		LinearLayout scoreList = (LinearLayout) parentView.findViewById(R.id.numberOfQuestionList);
-
+		
 		LinearLayout layout = new LinearLayout(getActivity());
 		for (int correctAnswers = 0; correctAnswers <= numberOfQuestions; correctAnswers++) {
-			Integer score = Math.round(correctAnswers * 100 / numberOfQuestions);
+			Integer score = Math.round(correctAnswers  * 100 / numberOfQuestions);
 
 			if (correctAnswers % 21 == 0) {
 				layout = new LinearLayout(getActivity());
@@ -50,11 +56,12 @@ public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
 				scoreList.addView(layout);
 			}
 			
-			renderScoreLayout(layout, correctAnswers, score);
+			renderScoreLayout(layout, numberOfQuestions - correctAnswers, score);
 			
 		}
 
 	}
+
 
 	public LinearLayout renderScoreLayout(LinearLayout layout, Integer correctAnswers, Integer score) {
 		int textWidth = 80;
@@ -69,6 +76,8 @@ public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
 		correctAnswerTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeNumber);
 		correctAnswerTextView.setTypeface(robotoBold);
 		
+		Log.v(TAG, "" + correctAnswerTextView.getHeight());
+		Log.v(TAG, "" + correctAnswerTextView.getWidth());
 		
 
 		TextView dividerTextView = new TextView(getActivity());

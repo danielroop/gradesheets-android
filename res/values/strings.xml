@@ -20,4 +20,17 @@
     <string name="pref_detailTypeDialogTitle">Select Detail View</string>
     <string name="pref_detailType_default">custom1</string>
     <string name="pref_detailType_id">detailType</string>
+    
+    
+    <string name="pref_numberRightOrWrong_id">numberRightOrWrong</string>
+    <string name="pref_displayNumberWrong_summary">Choose this setting if you want to have the numbers be the number answered incorrectly instead of the number answerd correctly.</string>
+    <string name="pref_displayNumberWrong_title">Inverted Points</string>    
+
+    
+    <string name="pref_fontSize_id">fontSizeId</string>
+    <string name="pref_fontSizeTitle">Font Size</string>
+    <string name="pref_fontSizeDialogTitle">Select Font Size</string>
+    <string name="pref_fontSize_default">18</string>
+
+    
 </resources>

@@ -5,11 +5,13 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver.OnDrawListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -95,16 +97,18 @@ public class GradeSheetHomePage extends FragmentActivity implements
             break;
 
 		}
-		
+	
 		return true;
 	}
+	
+	
 	
 	/**
 	 * Callback method from {@link GradeSheetListFragment.Callbacks} indicating
 	 * that the item with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(String id) {
+	public void onItemSelected(String id) {		
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a

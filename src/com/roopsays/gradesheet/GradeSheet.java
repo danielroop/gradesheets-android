@@ -50,7 +50,7 @@ public class GradeSheet extends FragmentActivity {
 			
 			GradeSheetDetailFragment fragment = new GradeSheetDetailCustomFragment();
 			
-			if (detailTypePref.equals("gridview")) fragment = new GradeSheetDetailGridViewFragment();
+			//if (detailTypePref.equals("gridview")) fragment = new GradeSheetDetailGridViewFragment();
 			
 			fragment.setArguments(arguments);
 			
