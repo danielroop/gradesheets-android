@@ -3,6 +3,7 @@ package com.roopsays.gradesheet;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.roopsays.gradesheet.model.GradesheetHistory;
 import com.roopsays.gradesheet.model.GradesheetMeta;
@@ -72,10 +74,36 @@ public class GradeSheetHomePage extends FragmentActivity implements
 		LinearLayout view = (LinearLayout) findViewById(R.id.gradesheet_history_list);
 		
 		for(int i = 0; i < topResults.size(); i++) {
+			final int numberOfQuestions = topResults.get(i).getNumberOfQuestions();
+			
 			TextView topResultTextView = new TextView(this);
-			topResultTextView.setText(String.valueOf(topResults.get(i).getNumberOfQuestions()) + "::" + String.valueOf(topResults.get(i).getNumberOfTimesAccessed()));
+			topResultTextView.setText(String.valueOf(numberOfQuestions) + "::" + String.valueOf(topResults.get(i).getNumberOfTimesAccessed()));
 			topResultTextView.setTextSize(20);
-			view.addView(topResultTextView);
+			
+			LinearLayout innerLayout = new LinearLayout(this);
+			innerLayout.setOrientation(LinearLayout.VERTICAL);
+			innerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 100));
+			innerLayout.setClickable(true);
+			innerLayout.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					history.updateUsage(numberOfQuestions);
+					this.setBackgroundColor(Color.DKGRAY);
+	
+					Intent detailIntent = new Intent(GradeSheetHomePage.this, GradeSheet.class);
+					detailIntent.putExtra(GradeSheetDetailFragment.ARG_ITEM_ID, numberOfQuestions);
+					startActivity(detailIntent);
+				}
+			});
+			
+			
+			TextView dividerTextView = new TextView(this);
+			dividerTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 1));
+			dividerTextView.setBackgroundColor(Color.BLACK);
+
+			innerLayout.addView(topResultTextView);
+			innerLayout.addView(dividerTextView);
+			view.addView(innerLayout);
 		}
 	}
 	
