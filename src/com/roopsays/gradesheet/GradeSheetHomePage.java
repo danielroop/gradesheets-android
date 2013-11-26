@@ -2,11 +2,16 @@ package com.roopsays.gradesheet;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver.OnDrawListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
@@ -30,30 +36,23 @@ import com.roopsays.gradesheet.model.GradesheetMeta;
  * activity presents the list of items and item details side-by-side using two
  * vertical panes.
  * <p>
- * The activity makes heavy use of fragments. The list of items is a
- * {@link GradeSheetListFragment} and the item details (if present) is a
- * {@link GradeSheetDetailCustomFragment}.
- * <p>
- * This activity also implements the required
- * {@link GradeSheetListFragment.Callbacks} interface to listen for item
- * selections.
  */
-public class GradeSheetHomePage extends FragmentActivity implements
-		GradeSheetListFragment.Callbacks {
+public class GradeSheetHomePage extends FragmentActivity {
 
-	/**
-	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-	 * device.
-	 */
-	private boolean mTwoPane;
 	private GradesheetHistory history;
-
+	private SharedPreferences sharedPref;
+	private int textSize;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gradesheet_homepage);
-
+		
+		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		textSize = Integer.parseInt(sharedPref.getString("fontSizeId", "18"));
 		history = new GradesheetHistory(getApplicationContext());
+		
 		
 		Button button = (Button) findViewById(R.id.create_gradesheet_button);
 		button.setOnClickListener(new OnClickListener() {
@@ -77,18 +76,17 @@ public class GradeSheetHomePage extends FragmentActivity implements
 			final int numberOfQuestions = topResults.get(i).getNumberOfQuestions();
 			
 			TextView topResultTextView = new TextView(this);
-			topResultTextView.setText(String.valueOf(numberOfQuestions) + "::" + String.valueOf(topResults.get(i).getNumberOfTimesAccessed()));
-			topResultTextView.setTextSize(20);
+			topResultTextView.setText(String.valueOf(numberOfQuestions));
+			topResultTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+
 			
-			LinearLayout innerLayout = new LinearLayout(this);
-			innerLayout.setOrientation(LinearLayout.VERTICAL);
+			RelativeLayout innerLayout = new RelativeLayout(this);
 			innerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 100));
 			innerLayout.setClickable(true);
 			innerLayout.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					history.updateUsage(numberOfQuestions);
-					this.setBackgroundColor(Color.DKGRAY);
 	
 					Intent detailIntent = new Intent(GradeSheetHomePage.this, GradeSheet.class);
 					detailIntent.putExtra(GradeSheetDetailFragment.ARG_ITEM_ID, numberOfQuestions);
@@ -96,14 +94,27 @@ public class GradeSheetHomePage extends FragmentActivity implements
 				}
 			});
 			
-			
-			TextView dividerTextView = new TextView(this);
-			dividerTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 1));
-			dividerTextView.setBackgroundColor(Color.BLACK);
+			TextView numberOfUses = new TextView(this);
+			numberOfUses.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			numberOfUses.setText("Number of Uses: " + String.valueOf(topResults.get(i).getNumberOfTimesAccessed()));
+			numberOfUses.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
+			numberOfUses.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
 
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) numberOfUses.getLayoutParams();
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			
+			innerLayout.setBackgroundResource(R.drawable.top_result_box);
 			innerLayout.addView(topResultTextView);
-			innerLayout.addView(dividerTextView);
-			view.addView(innerLayout);
+			innerLayout.addView(numberOfUses);
+
+			LinearLayout outerLayout = new LinearLayout(this);
+			outerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+			outerLayout.setPadding(10,  10,  10,  10);
+			outerLayout.addView(innerLayout);
+
+			
+			view.addView(outerLayout);
 		}
 	}
 	
@@ -127,35 +138,5 @@ public class GradeSheetHomePage extends FragmentActivity implements
 		}
 	
 		return true;
-	}
-	
-	
-	
-	/**
-	 * Callback method from {@link GradeSheetListFragment.Callbacks} indicating
-	 * that the item with the given ID was selected.
-	 */
-	@Override
-	public void onItemSelected(String id) {		
-		if (mTwoPane) {
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(GradeSheetDetailFragment.ARG_ITEM_ID, id);
-			GradeSheetDetailCustomFragment fragment = new GradeSheetDetailCustomFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.gradesheet_detail_container, fragment)
-					.commit();
-
-		} else {
-			// In single-pane mode, simply start the detail activity
-			// for the selected item ID.
-			Intent detailIntent = new Intent(this,
-					GradeSheet.class);
-			detailIntent.putExtra(GradeSheetDetailFragment.ARG_ITEM_ID, id);
-			startActivity(detailIntent);
-		}
 	}
 }
