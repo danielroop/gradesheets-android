@@ -81,7 +81,7 @@ public class GradeSheetHomePage extends FragmentActivity {
 
 			
 			RelativeLayout innerLayout = new RelativeLayout(this);
-			innerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 100));
+			innerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			innerLayout.setClickable(true);
 			innerLayout.setOnClickListener(new OnClickListener() {
 				@Override
@@ -108,7 +108,7 @@ public class GradeSheetHomePage extends FragmentActivity {
 			innerLayout.addView(numberOfUses);
 
 			LinearLayout outerLayout = new LinearLayout(this);
-			outerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			outerLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 			outerLayout.setPadding(10,  10,  10,  10);
 			outerLayout.addView(innerLayout);

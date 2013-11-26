@@ -1,5 +1,9 @@
 package com.roopsays.gradesheet;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -33,6 +37,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 	private SharedPreferences sharedPref;
 	private int textSize;
 	private int numberOfRows;
+	private Map<String, Integer> dimensions;
 
 	
 	/**
@@ -55,12 +60,8 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		  @Override
 		  public void run()
 		  {
-		    Log.v(TAG, rootView.getWidth() + "");
-		    Log.v(TAG, rootView.getHeight() + "");
-		    
-		    int rowHeight = getHeight(getActivity().getApplicationContext(), "1000", textSize, 720, robotoBold, 0);
-		    numberOfRows = (rootView.getHeight()/rowHeight);
-		    Log.v(TAG, "HEIGHT: " + rowHeight + "  :: Rows: " + numberOfRows);
+		    dimensions = getDimensions(getActivity().getApplicationContext(), "1000", textSize, 720, robotoBold, 0);
+		    numberOfRows = (rootView.getHeight()/dimensions.get("height"));
 		    
 			if (numberOfQuestions != null) {
 				createQuestionCards(rootView, numberOfQuestions);
@@ -88,7 +89,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 	    vto.addOnPreDrawListener(preDrawListener);
 	}
 	
-	public static int getHeight(Context context, CharSequence text, int textSize, int deviceWidth, Typeface typeface,int padding) {
+	public static Map<String, Integer> getDimensions(Context context, CharSequence text, int textSize, int deviceWidth, Typeface typeface,int padding) {
         TextView textView = new TextView(context);
         textView.setPadding(padding,0,padding,padding);
         textView.setTypeface(typeface);
@@ -97,7 +98,11 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(deviceWidth, View.MeasureSpec.AT_MOST);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);
-        return textView.getMeasuredHeight();
+        
+        Map<String, Integer> results = new HashMap<String, Integer>();
+        results.put("height", textView.getMeasuredHeight());
+        results.put("width", textView.getMeasuredWidth());
+        return results;
     }
 	
 	public void calculateFontSize(View parentView) {
@@ -215,9 +220,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 	}
 
 	public LinearLayout renderScoreLayout(LinearLayout layout, Integer label, Integer score) {
-		int textWidth = 80;
-
-		LayoutParams correctAnswerLayoutParams = new LayoutParams(textWidth, LayoutParams.WRAP_CONTENT);
+		LayoutParams correctAnswerLayoutParams = new LayoutParams(dimensions.get("width"), LayoutParams.WRAP_CONTENT);
 
 		TextView correctAnswerTextView = new TextView(getActivity());
 		correctAnswerTextView.setText(String.valueOf(label));
@@ -231,7 +234,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		dividerTextView.setLayoutParams(new LayoutParams(1, LayoutParams.MATCH_PARENT));
 		dividerTextView.setBackgroundColor(Color.BLACK);
 
-		LayoutParams scoreTextViewLayoutParams = new LayoutParams(textWidth, LayoutParams.WRAP_CONTENT);
+		LayoutParams scoreTextViewLayoutParams = new LayoutParams(dimensions.get("width"), LayoutParams.WRAP_CONTENT);
 
 		TextView scoreTextView = new TextView(getActivity());
 		scoreTextView.setText(String.valueOf(score) + "%");
