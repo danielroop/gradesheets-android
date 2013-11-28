@@ -69,7 +69,7 @@ public class GradesheetHistory extends SQLiteOpenHelper {
 		columns[2] = "LAST_ACCESSED";
 
 		
-		Cursor cursor = db.query(GRADESHEET_HISTORY_TABLE_NAME, columns, null, null, null, null, "NUMBER_OF_TIMES_ACCESSED DESC", "10");
+		Cursor cursor = db.query(GRADESHEET_HISTORY_TABLE_NAME, columns, null, null, null, null, "NUMBER_OF_TIMES_ACCESSED DESC", "30");
 		
 		while(cursor.moveToNext()) {
 			GradesheetMeta meta = new GradesheetMeta();
@@ -86,6 +86,17 @@ public class GradesheetHistory extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(GRADESHEET_HISTORY_TABLE_CREATE);
+
+		int[] startingValues = new int[] {10, 20, 30, 40, 50, 15, 25, 35, 45, 55};
+
+		for (int i = 0; i < startingValues.length; i++){
+			ContentValues insertValues = new ContentValues();
+			insertValues.put("NUMBER_OF_QUESTIONS", startingValues[i]);
+			insertValues.put("NUMBER_OF_TIMES_ACCESSED", 0);
+			insertValues.put("LAST_ACCESSED", 1);
+			
+			db.insert(GRADESHEET_HISTORY_TABLE_NAME, null, insertValues);
+		}
 	}
 
 	@Override

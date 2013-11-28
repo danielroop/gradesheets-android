@@ -8,7 +8,11 @@
     <LinearLayout 
         android:orientation="horizontal" 
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+		android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+		android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <EditText
             android:id="@+id/gradesheet_numberofquestions"
@@ -35,8 +39,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/gradesheet_history_header"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
+    <!-- 
     <ScrollView 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -48,7 +54,23 @@
 	        android:layout_height="wrap_content">
             
 	    </LinearLayout>
-        
     </ScrollView>
+     -->
+    <GridView 
+        android:id="@+id/gradesheet_history_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+	    android:columnWidth="60dp"
+	    android:numColumns="auto_fit"
+	    android:verticalSpacing="10dp"
+	    android:horizontalSpacing="10dp"
+	    android:stretchMode="columnWidth"
+	    android:gravity="center"
+		android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+		android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+	    >
+       </GridView>
 
 </LinearLayout>

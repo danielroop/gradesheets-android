@@ -74,7 +74,7 @@ public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
 		correctAnswerTextView.setLayoutParams(correctAnswerLayoutParams);
 		correctAnswerTextView.setGravity(Gravity.CENTER);
 		correctAnswerTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeNumber);
-		correctAnswerTextView.setTypeface(robotoBold);
+		correctAnswerTextView.setTypeface(GradeSheetFonts.robotoBold);
 		
 		Log.v(TAG, "" + correctAnswerTextView.getHeight());
 		Log.v(TAG, "" + correctAnswerTextView.getWidth());
@@ -91,7 +91,7 @@ public class GradeSheetDetailGridViewFragment extends GradeSheetDetailFragment{
 		scoreTextView.setLayoutParams(scoreTextViewLayoutParams);
 		scoreTextView.setGravity(Gravity.CENTER);
 		scoreTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeScore);
-		correctAnswerTextView.setTypeface(robotoCondRegular);
+		correctAnswerTextView.setTypeface(GradeSheetFonts.robotoCondRegular);
 
 
 

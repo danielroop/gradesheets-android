@@ -1,21 +1,16 @@
 package com.roopsays.gradesheet;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +55,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		  @Override
 		  public void run()
 		  {
-		    dimensions = getDimensions(getActivity().getApplicationContext(), "1000", textSize, 720, robotoBold, 0);
+		    dimensions = getDimensions(getActivity().getApplicationContext(), "1000", textSize, 720, GradeSheetFonts.robotoBold, 0);
 		    numberOfRows = (rootView.getHeight()/dimensions.get("height"));
 		    
 			if (numberOfQuestions != null) {
@@ -104,73 +99,6 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
         results.put("width", textView.getMeasuredWidth());
         return results;
     }
-	
-	public void calculateFontSize(View parentView) {
-		final Display display = getActivity().getWindowManager().getDefaultDisplay();		
-		Point size = new Point();
-		
-		
-		final LinearLayout detailLayout = (LinearLayout) parentView.findViewById(R.id.gradesheet_detail);
-		
-		final View view = parentView;
-		runJustBeforeBeingDrawn(view,new Runnable()
-		{
-		  @Override
-		  public void run()
-		  {
-		    Log.v(TAG, view.getWidth() + "");
-		    Log.v(TAG, view.getHeight() + "");
-		  }
-		});
-		
-		/*
-		detailLayout.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
-		
- 		int width = detailLayout.getMeasuredWidth();
-		int height = detailLayout.getMeasuredHeight();
-		
-		Log.v(TAG, display.getWidth() + " :: " +  display.getHeight());
-		Log.v(TAG, width + " :: " + height);
-		
-		*/
-		
-		
-		
-		String label = "1000";
-		
-		final float densityMultiplier = getActivity().getApplicationContext().getResources().getDisplayMetrics().density;
-		
-		Paint p = new Paint();
-		p.setTypeface(robotoBold);
-		Rect bounds = new Rect();
-		p.getTextBounds(String.valueOf(label), 0, String.valueOf(label).length(), bounds);
-		//Log.v(TAG, densityMultiplier + " :: " + bounds.width() + " :: " + bounds.height() + " :: " + Math.round(height / (bounds.height() + 5)));
-
-		
-		/*
-		detailLayout.post(new Runnable(){
-		    public void run(){
-		 		int width = detailLayout.getWidth();
-				int height = detailLayout.getHeight();
-				
-				Log.v(TAG, display.getWidth() + " :: " +  display.getHeight());
-				Log.v(TAG, width + " :: " + height);
-				
-				String label = "1000";
-				
-				final float densityMultiplier = getActivity().getApplicationContext().getResources().getDisplayMetrics().density;
-
-				
-				Paint p = new Paint();
-				p.setTypeface(robotoBold);
-				Rect bounds = new Rect();
-				p.getTextBounds(String.valueOf(label), 0, String.valueOf(label).length(), bounds);
-				Log.v(TAG, densityMultiplier + " :: " + bounds.width() + " :: " + bounds.height() + " :: " + Math.round(height / (bounds.height() + 5)));
-
-		    }
-		});*/
-		
-	}
 
 	public void createQuestionCards(View parentView, int numberOfQuestions) {
 		Boolean displayNumberWrong = sharedPref.getBoolean("displayNumberWrong", false);
@@ -215,7 +143,6 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 			}
 			
 			renderScoreLayout(layout, wrongAnswers, score);
-			Log.v(TAG, "Padding: " + layout.getPaddingBottom() + " :: " + layout.getPaddingTop());
 		}
 	}
 
@@ -227,7 +154,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		correctAnswerTextView.setLayoutParams(correctAnswerLayoutParams);
 		correctAnswerTextView.setGravity(Gravity.CENTER);
 		correctAnswerTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeNumber);
-		correctAnswerTextView.setTypeface(robotoBold);		
+		correctAnswerTextView.setTypeface(GradeSheetFonts.robotoBold);		
 		correctAnswerTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
 
 		TextView dividerTextView = new TextView(getActivity());
@@ -241,7 +168,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		scoreTextView.setLayoutParams(scoreTextViewLayoutParams);
 		scoreTextView.setGravity(Gravity.CENTER);
 		scoreTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeScore);
-		scoreTextView.setTypeface(robotoCondRegular);
+		scoreTextView.setTypeface(GradeSheetFonts.robotoCondRegular);
 		scoreTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
 
 

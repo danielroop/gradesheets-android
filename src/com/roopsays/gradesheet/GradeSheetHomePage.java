@@ -2,29 +2,28 @@ package com.roopsays.gradesheet;
 
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnDrawListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 
+import com.roopsays.gradesheet.gridview.TopResultGridAdapter;
 import com.roopsays.gradesheet.model.GradesheetHistory;
 import com.roopsays.gradesheet.model.GradesheetMeta;
 
@@ -47,11 +46,16 @@ public class GradeSheetHomePage extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		GradeSheetFonts.init(this);
+
 		setContentView(R.layout.activity_gradesheet_homepage);
 		
 		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		textSize = Integer.parseInt(sharedPref.getString("fontSizeId", "18"));
 		history = new GradesheetHistory(getApplicationContext());
+		
+		TextView heading = (TextView) findViewById(R.id.textView1);
+		heading.setTypeface(GradeSheetFonts.robotoBold);
 		
 		
 		Button button = (Button) findViewById(R.id.create_gradesheet_button);
@@ -70,7 +74,33 @@ public class GradeSheetHomePage extends FragmentActivity {
 		});
 		
 		List<GradesheetMeta> topResults = history.topGradesheetRequests();
-		LinearLayout view = (LinearLayout) findViewById(R.id.gradesheet_history_list);
+		//renderTopResultsListView(topResults);
+		renderTopResultsGridView(topResults);
+	}
+	
+	public void renderTopResultsGridView(final List<GradesheetMeta> topResults) {
+		GridView view = (GridView) findViewById(R.id.gradesheet_history_grid);
+		view.setAdapter(new TopResultGridAdapter(this, topResults));
+		
+		view.setOnItemClickListener(new OnItemClickListener() {
+	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+	        	int numberOfQuestions = topResults.get(position).getNumberOfQuestions();
+	        	selectTopResult(numberOfQuestions);
+	        }
+	    });
+	}
+	
+	public void selectTopResult(int numberOfQuestions) {
+    	history.updateUsage(numberOfQuestions);
+		
+		Intent detailIntent = new Intent(GradeSheetHomePage.this, GradeSheet.class);
+		detailIntent.putExtra(GradeSheetDetailFragment.ARG_ITEM_ID, numberOfQuestions);
+		startActivity(detailIntent);
+	}
+
+	
+	public void renderTopResultsListView(List<GradesheetMeta> topResults) {
+		LinearLayout view = (LinearLayout) findViewById(R.id.gradesheet_history_grid);
 		
 		for(int i = 0; i < topResults.size(); i++) {
 			final int numberOfQuestions = topResults.get(i).getNumberOfQuestions();
@@ -86,11 +116,7 @@ public class GradeSheetHomePage extends FragmentActivity {
 			innerLayout.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					history.updateUsage(numberOfQuestions);
-	
-					Intent detailIntent = new Intent(GradeSheetHomePage.this, GradeSheet.class);
-					detailIntent.putExtra(GradeSheetDetailFragment.ARG_ITEM_ID, numberOfQuestions);
-					startActivity(detailIntent);
+					selectTopResult(numberOfQuestions);
 				}
 			});
 			
@@ -98,7 +124,6 @@ public class GradeSheetHomePage extends FragmentActivity {
 			numberOfUses.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			numberOfUses.setText("Number of Uses: " + String.valueOf(topResults.get(i).getNumberOfTimesAccessed()));
 			numberOfUses.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
-			numberOfUses.setTextAlignment(TextView.TEXT_ALIGNMENT_VIEW_END);
 
 			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) numberOfUses.getLayoutParams();
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -112,7 +137,6 @@ public class GradeSheetHomePage extends FragmentActivity {
 
 			outerLayout.setPadding(10,  10,  10,  10);
 			outerLayout.addView(innerLayout);
-
 			
 			view.addView(outerLayout);
 		}

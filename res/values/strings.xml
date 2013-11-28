@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Easy Grader</string>
+    <string name="app_name">Grade Sheets</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="edit_message">Enter a message</string>
     <string name="default_score">0%</string>
     <string name="title_activity_display_message">My message</string>
-    <string name="gradesheet_history_header">Recent Gradesheets</string>
+    <string name="gradesheet_history_header">Recent Grade Sheets</string>
     <string name="create_gradesheet_label">Create</string>
     <string name="title_activity_scrolling_numbers_static_cards">ScrollingNumbersStaticCards</string>
-    <string name="title_gradesheet_list">GradeSheets</string>
-    <string name="title_gradesheet_detail">GradeSheet Detail</string>
+    <string name="title_gradesheet_list">Grade Sheets</string>
+    <string name="title_gradesheet_detail">Grade Sheet Detail</string>
     
     
     <string name="menu_settings">Settings</string>
