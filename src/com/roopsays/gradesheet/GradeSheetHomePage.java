@@ -3,9 +3,7 @@ package com.roopsays.gradesheet;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -21,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.roopsays.gradesheet.gridview.TopResultGridAdapter;
 import com.roopsays.gradesheet.model.GradesheetHistory;
@@ -38,10 +35,7 @@ import com.roopsays.gradesheet.model.GradesheetMeta;
  */
 public class GradeSheetHomePage extends FragmentActivity {
 
-	private GradesheetHistory history;
-	private SharedPreferences sharedPref;
-	private int textSize;
-	
+	private GradesheetHistory history;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +44,6 @@ public class GradeSheetHomePage extends FragmentActivity {
 
 		setContentView(R.layout.activity_gradesheet_homepage);
 		
-		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		textSize = Integer.parseInt(sharedPref.getString("fontSizeId", "18"));
 		history = new GradesheetHistory(getApplicationContext());
 		
 		TextView heading = (TextView) findViewById(R.id.textView1);
@@ -72,7 +64,7 @@ public class GradeSheetHomePage extends FragmentActivity {
 				startActivity(detailIntent);
 			}
 		});
-		
+
 		List<GradesheetMeta> topResults = history.topGradesheetRequests();
 		//renderTopResultsListView(topResults);
 		renderTopResultsGridView(topResults);

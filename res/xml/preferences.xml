@@ -15,7 +15,15 @@
  	    android:dialogTitle="@string/pref_fontSizeDialogTitle"
  	    android:entries="@array/pref_fontSize_entrires"
  	    android:entryValues="@array/pref_fontSize_values"
- 	    android:defaultValue="@string/pref_fontSize_default"/>
+ 	    android:defaultValue="@string/pref_fontSize_default" />
+ 	
+ 	<ListPreference 
+        android:key="@string/pref_degreesOfPrecision_id"
+ 	    android:title="@string/pref_degreesOfPrecision_title"
+ 	    android:dialogTitle="@string/pref_degreesOfPrecision_dialogTitle"
+ 	    android:entries="@array/pref_degreesOfPrecision_entrires"
+ 	    android:entryValues="@array/pref_degreesOfPrecision_values"
+ 	    android:defaultValue="@string/pref_degreesOfPrecision_default" />
 	
  	<CheckBoxPreference
         android:key="displayNumberWrong"
@@ -23,6 +31,13 @@
         android:summary="@string/pref_displayNumberWrong_summary"
         android:defaultValue="false" />
 
+ 	<!-- 
+	<CheckBoxPreference 
+	    android:key="displayGradeScale"
+	    android:title="@string/pref_displayGradeScale_title"
+	    android:summary="@string/pref_displayGradeScale_summary"
+	    android:defaultValue="false"/> 	
+    -->
  
 
 </PreferenceScreen>

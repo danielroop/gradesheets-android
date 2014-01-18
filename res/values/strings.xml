@@ -32,5 +32,12 @@
     <string name="pref_fontSizeDialogTitle">Select Font Size</string>
     <string name="pref_fontSize_default">18</string>
 
+	<string name="pref_displayGradeScale_summary">Select this if you want to highlight the grades that are in a defined range (e.g, 90 to 100 = A)</string>
+    <string name="pref_displayGradeScale_title">Enable Grade Scale</string>    
+
+    <string name="pref_degreesOfPrecision_id">degressOfPrecision</string>
+    <string name="pref_degreesOfPrecision_title">Number of Decimal Points</string>
+    <string name="pref_degreesOfPrecision_dialogTitle">Select Number of Decimal Points</string>
+    <string name="pref_degreesOfPrecision_default">0</string>
     
 </resources>

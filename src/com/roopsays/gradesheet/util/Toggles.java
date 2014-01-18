@@ -1,7 +1,7 @@
 package com.roopsays.gradesheet.util;
 
 public enum Toggles {
-	ENABLE_ADS(true),
+	ENABLE_ADS(false),
 	ENABLE_GRADE_SCALE(false);
 	
 	private boolean defaultState;

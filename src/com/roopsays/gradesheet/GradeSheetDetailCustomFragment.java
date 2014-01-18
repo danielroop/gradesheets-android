@@ -1,7 +1,12 @@
 package com.roopsays.gradesheet;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.android.gms.ads.*;
+import com.roopsays.gradesheet.util.Toggles;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,8 +37,12 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 	private SharedPreferences sharedPref;
 	private int textSize;
 	private int numberOfRows;
-	private Map<String, Integer> dimensions;
-
+	private boolean displayGradeScale;
+	private String precisionMultiplier;
+	private Map<String, Integer> boldDimensions;
+	private Map<String, Integer> lightDimensions;
+	private String pattern = "##0";
+	private DecimalFormat df;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,21 +57,58 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		final View rootView = inflater.inflate(R.layout.fragment_gradesheet_detail, container, false);
 		sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		textSize = Integer.parseInt(sharedPref.getString("fontSizeId", "18"));
-
+		displayGradeScale = sharedPref.getBoolean("displayGradeScale", false);
+		precisionMultiplier = sharedPref.getString("degressOfPrecision", "1");
+		
+		if ("1".equals(precisionMultiplier)) {
+			pattern = "##0.0";  
+		} else if ("2".equals(precisionMultiplier)) {
+			pattern = "##0.00";  
+		}
+		  
+		NumberFormat nf = NumberFormat.getNumberInstance();
+		df = (DecimalFormat)nf;
+		df.applyPattern(pattern);
 		
 		runJustBeforeBeingDrawn(rootView,new Runnable()
 		{
 		  @Override
 		  public void run()
 		  {
-		    dimensions = getDimensions(getActivity().getApplicationContext(), "1000", textSize, 720, GradeSheetFonts.robotoBold, 0);
-		    numberOfRows = (rootView.getHeight()/dimensions.get("height"));
+			  int viewHeight = rootView.getHeight();
+			  
+			  if (Toggles.ENABLE_ADS.on()) {
+				viewHeight  = viewHeight - ((int) (60 * getResources().getDisplayMetrics().density));
+				  
+				//Load Ad
+				AdView adView = new AdView(getActivity());
+				adView.setAdUnitId("ca-app-pub-9173371941059873/1941495742");
+				adView.setAdSize(AdSize.BANNER);
+				
+				AdRequest adRequest = new AdRequest.Builder()
+				    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+				    .build();
+				adView.loadAd(adRequest);
+				
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+				params.gravity = Gravity.CENTER;
+				adView.setLayoutParams(params);
+				
+				((LinearLayout) rootView).addView(adView);
+			  }
+			  
+			  String output = df.format(100.000000f) + "%";
+
+			  boldDimensions = getDimensions(getActivity().getApplicationContext(), "1000", textSize, 720, GradeSheetFonts.robotoBold, 0);
+			  lightDimensions = getDimensions(getActivity().getApplicationContext(), output, textSize, 720, GradeSheetFonts.robotoCondRegular, 0);
+			  numberOfRows = (viewHeight / boldDimensions.get("height"));
 		    
 			if (numberOfQuestions != null) {
 				createQuestionCards(rootView, numberOfQuestions);
 			}
 		  }
 		});
+		
 		return rootView;
 	}
 	
@@ -116,7 +162,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		LinearLayout layout = new LinearLayout(getActivity());
 		
 		for (int correctAnswers = 0; correctAnswers <= numberOfQuestions; correctAnswers++) {
-			Integer score = Math.round(correctAnswers * 100 / numberOfQuestions);
+			Float score = (correctAnswers * 100 / (float) numberOfQuestions);
 
 			if (correctAnswers % numberOfRows == 0) {
 				layout = new LinearLayout(getActivity());
@@ -133,7 +179,7 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		LinearLayout layout = new LinearLayout(getActivity());
 		
 		for (int wrongAnswers = 0; wrongAnswers <= numberOfQuestions; wrongAnswers++) {
-			Integer score = Math.round((numberOfQuestions - wrongAnswers) * 100 / numberOfQuestions);
+			Float score = ((numberOfQuestions - wrongAnswers) * 100 / (float) numberOfQuestions);
 
 			if (wrongAnswers % numberOfRows == 0) {
 				layout = new LinearLayout(getActivity());
@@ -146,8 +192,8 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		}
 	}
 
-	public LinearLayout renderScoreLayout(LinearLayout layout, Integer label, Integer score) {
-		LayoutParams correctAnswerLayoutParams = new LayoutParams(dimensions.get("width"), LayoutParams.WRAP_CONTENT);
+	public LinearLayout renderScoreLayout(LinearLayout layout, Integer label, Float score) {
+		LayoutParams correctAnswerLayoutParams = new LayoutParams(boldDimensions.get("width"), LayoutParams.WRAP_CONTENT);
 
 		TextView correctAnswerTextView = new TextView(getActivity());
 		correctAnswerTextView.setText(String.valueOf(label));
@@ -161,15 +207,30 @@ public class GradeSheetDetailCustomFragment extends GradeSheetDetailFragment{
 		dividerTextView.setLayoutParams(new LayoutParams(1, LayoutParams.MATCH_PARENT));
 		dividerTextView.setBackgroundColor(Color.BLACK);
 
-		LayoutParams scoreTextViewLayoutParams = new LayoutParams(dimensions.get("width"), LayoutParams.WRAP_CONTENT);
+		// I need to increase the size of this box, based on the number of decimal points.
+		LayoutParams scoreTextViewLayoutParams = new LayoutParams(lightDimensions.get("width"), LayoutParams.WRAP_CONTENT);
 
 		TextView scoreTextView = new TextView(getActivity());
-		scoreTextView.setText(String.valueOf(score) + "%");
+		scoreTextView.setText(df.format(score) + "%");
 		scoreTextView.setLayoutParams(scoreTextViewLayoutParams);
-		scoreTextView.setGravity(Gravity.CENTER);
+		scoreTextView.setGravity(Gravity.RIGHT);
 		scoreTextView.setTextAppearance(getActivity().getApplicationContext(), R.style.GradeScore);
 		scoreTextView.setTypeface(GradeSheetFonts.robotoCondRegular);
 		scoreTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+		
+		if (displayGradeScale) {
+			if (score >= 90) {
+				scoreTextView.setBackgroundColor(Color.parseColor("#7700FF00"));
+			} else if (score >= 80) {
+				scoreTextView.setBackgroundColor(Color.parseColor("#6600FF00"));
+			} else if (score >= 70) {
+				scoreTextView.setBackgroundColor(Color.parseColor("#880000FF"));
+			} else if (score >= 60) {
+				scoreTextView.setBackgroundColor(Color.parseColor("#99FFFF00"));
+			} else {
+				scoreTextView.setBackgroundColor(Color.parseColor("#5500FFFF"));
+			}
+		}
 
 
 

@@ -1,7 +1,11 @@
 package com.roopsays.gradesheet;
 
+import com.roopsays.gradesheet.util.Toggles;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -19,6 +23,17 @@ public class SettingsActivity extends PreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		
+		if ( !Toggles.ENABLE_GRADE_SCALE.on()) {
+			//This can enable or disable, but it was not successful in hiding it, as I misunderstood the setView setting.
+			//getPreferenceManager().findPreference("displayGradeScale").setEnabled(true);
+			
+			
+			//This is not working yet. 
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+			sharedPref.edit().remove("displayGradeScale");
+			sharedPref.edit().commit();
+		}
 	}
 
 }
