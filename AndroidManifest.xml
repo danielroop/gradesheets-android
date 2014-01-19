@@ -22,7 +22,7 @@
                android:value="@integer/google_play_services_version"/>
         
         <activity
-            android:name="com.roopsays.gradesheet.GradeSheetHomePage"
+            android:name="com.roopsays.gradesheet.foundation.GradeSheetHomePage"
             android:label="@string/title_gradesheet_list" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.roopsays.gradesheet.GradeSheet"
+            android:name="com.roopsays.gradesheet.foundation.GradeSheet"
             android:label="@string/title_gradesheet_detail"
             android:parentActivityName="com.roopsays.gradesheet.GradeSheetHomePage" >
             <meta-data
@@ -39,9 +39,9 @@
                 android:value=".GradeSheetListActivity" />
         </activity>
         <activity
-            android:name="com.roopsays.gradesheet.SettingsActivity"
+            android:name="com.roopsays.gradesheet.foundation.SettingsActivity"
             android:label="@string/title_activity_settings"             
-            android:parentActivityName="com.roopsays.gradesheet.GradeSheetHomePage" >
+            android:parentActivityName="com.roopsays.gradesheet.foundation.GradeSheetHomePage" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GradeSheetListActivity" />
